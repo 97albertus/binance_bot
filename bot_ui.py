@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import logging
 import asyncio
-from binance.client import Client
 from binance.um_futures import UMFutures
 from binance.lib.utils import config_logging
 from binance.error import ClientError
