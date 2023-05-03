@@ -29,7 +29,6 @@ baseurl=testnet if mode == 0 else mainnet
 
 um_futures_client = UMFutures(key=key, secret=secret, base_url=baseurl)
 
-# Fetch trading pairs
 exchange_info=um_futures_client.exchange_info()
 trading_pairs = [symbol['symbol'] for symbol in exchange_info['symbols']]
 
@@ -42,34 +41,32 @@ orderMode = 0
 recvWindow = 7000
 stop_monitor = False
 
-# Create a tkinter window
 root = tk.Tk()
-root.title("Trading Bot")
+root.title("Binance Бот")
 
 box_value = tk.StringVar()
 def update_symbol():
     global symbol
     symbol = box_value.get()
 
+combo_label = ttk.Label(root, text="Торговая пара:")
+combo_label.pack()
 combo = tkentrycomplete.AutocompleteCombobox(textvariable=box_value)
 combo.set_completion_list(trading_pairs)
 combo.bind("<<ComboboxSelected>>", update_symbol)
 combo.pack()
 
-price_label = ttk.Label(root, text="Price:")
+price_label = ttk.Label(root, text="Цена:")
 price_entry = ttk.Entry(root)
-stop_loss_label = ttk.Label(root, text="Stop-Loss:")
+stop_loss_label = ttk.Label(root, text="Стоп-лосс:")
 stop_loss_entry = ttk.Entry(root)
-quantity_label = ttk.Label(root, text="Quantity:")
+quantity_label = ttk.Label(root, text="Количество:")
 quantity_entry = ttk.Entry(root)
-# symbol_label = ttk.Label(root, text="Symbol:")
-# symbol_combo = ttk.Combobox(root, values=trading_pairs)
 start_stop_button = ttk.Button(root, text="Start")
-side_label = ttk.Label(root, text="Side:")
+side_label = ttk.Label(root, text="Сторона:")
 side_combo = ttk.Combobox(root, values=["BUY", "SELL"])
 side_combo.config(state="readonly")
 
-# Pack UI elements into the window
 price_label.pack()
 price_entry.pack()
 stop_loss_label.pack()
@@ -291,10 +288,6 @@ def stop_monitor_thread():
     global stop_monitor
     stop_monitor = True
 
-# monitor_thread = threading.Thread(target=start_monitor_thread, args=(side, stopPrice, stopLossPrice, symbol, quantity))
-# monitor_thread.start()
-
-# Add functionality to the UI elements
 def start_stop():
     global stop_monitor
     if start_stop_button["text"] == "Start":
@@ -311,10 +304,4 @@ def start_stop():
 
 start_stop_button["command"] = start_stop
 
-# async def main(side, stopPrice, stopLossPrice, symbol, quantity):
-#     output = await monitor(side, stopPrice, stopLossPrice, symbol, quantity)
-#     print(output)
-
-# asyncio.run(main(side, stopPrice, stopLossPrice, symbol, quantity))
-# Run the tkinter main loop
 root.mainloop()
